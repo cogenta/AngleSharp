@@ -1,4 +1,4 @@
-﻿namespace AngleSharp.Dom
+namespace AngleSharp.Dom
 {
     using AngleSharp.Text;
     using System;
@@ -12,8 +12,6 @@
     {
         #region Fields
 
-        private static readonly ConditionalWeakTable<Node, Document> Owners = new ConditionalWeakTable<Node, Document>();
-
         private readonly NodeType _type;
         private readonly String _name;
         private readonly NodeFlags _flags;
@@ -21,6 +19,7 @@
         private Url _baseUri;
         private Node _parent;
         private NodeList _children;
+        private Document _owner;
 
         #endregion
 
@@ -28,7 +27,7 @@
 
         internal Node(Document owner, String name, NodeType type = NodeType.Element, NodeFlags flags = NodeFlags.None)
         {
-            Owners.Add(this, owner);
+            _owner = owner;
             _name = name ?? String.Empty;
             _type = type;
             _children = this.IsEndPoint() ? NodeList.Empty : new NodeList();
@@ -224,14 +223,12 @@
         {
             get
             {
-                var owner = default(Document);
-
-                if (_type != NodeType.Document)
+                if (_type == NodeType.Document)
                 {
-                    Owners.TryGetValue(this, out owner);
+                    return default(Document);
                 }
 
-                return owner;
+                return _owner;
             }
             set
             {
@@ -241,8 +238,7 @@
 
                     if (!Object.ReferenceEquals(oldDocument, value))
                     {
-                        Owners.Remove(descendentAndSelf);
-                        Owners.Add(descendentAndSelf, value);
+                        descendentAndSelf._owner = value;
 
                         if (oldDocument != null)
                         {
