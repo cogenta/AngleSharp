@@ -1,4 +1,4 @@
-﻿namespace AngleSharp.Io.Processors
+namespace AngleSharp.Io.Processors
 {
     using AngleSharp.Common;
     using AngleSharp.Css;
@@ -66,7 +66,7 @@
                 return FinishDownloadAsync();
             }
 
-            return null;
+            return Task.FromResult(0);
         }
 
         protected override async Task ProcessResponseAsync(IResponse response)

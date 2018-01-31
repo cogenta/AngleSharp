@@ -1,4 +1,4 @@
-﻿namespace AngleSharp.Io.Processors
+namespace AngleSharp.Io.Processors
 {
     using AngleSharp.Media;
     using System;
@@ -52,7 +52,7 @@
                 return base.ProcessAsync(request);
             }
 
-            return null;
+            return Task.FromResult(0);
         }
 
         #endregion

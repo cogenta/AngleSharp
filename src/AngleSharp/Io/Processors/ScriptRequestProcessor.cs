@@ -1,4 +1,4 @@
-﻿namespace AngleSharp.Io.Processors
+namespace AngleSharp.Io.Processors
 {
     using AngleSharp.Dom;
     using AngleSharp.Html.Dom;
@@ -135,7 +135,7 @@
                 return Download.Task;
             }
 
-            return null;
+            return Task.FromResult(0);
         }
 
         #endregion
